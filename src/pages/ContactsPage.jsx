@@ -24,7 +24,6 @@ export default function ContactsPage() {
     setLoading(true);
     const { data } = await supabase
       .from("contacts").select("*")
-      .eq("user_email", userEmail)
       .order("created_at", { ascending: false });
     setContacts(data || []);
     setLoading(false);

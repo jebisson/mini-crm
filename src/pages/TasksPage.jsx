@@ -42,7 +42,7 @@ export default function TasksPage() {
     setLoading(true);
     const [t, c] = await Promise.all([
       buildTaskQuery(),
-      supabase.from("contacts").select("id, name").eq("user_email", userEmail).order("name"),
+      supabase.from("contacts").select("id, name").order("name"),
     ]);
     setTasks(t.data || []);
     setContacts(c.data || []);

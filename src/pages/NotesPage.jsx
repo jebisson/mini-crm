@@ -35,7 +35,7 @@ export default function NotesPage() {
     setLoading(true);
     const [n, c] = await Promise.all([
       buildNotesQuery(),
-      supabase.from("contacts").select("id, name").eq("user_email", userEmail).order("name"),
+      supabase.from("contacts").select("id, name").order("name"),
     ]);
     setNotes(n.data || []); setContacts(c.data || []);
     setLoading(false);

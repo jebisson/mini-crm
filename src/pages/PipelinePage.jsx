@@ -78,8 +78,12 @@ export default function PipelinePage() {
 
   const fetchAll = async () => {
     setLoading(true);
+    let oppsQuery = supabase.from("opportunities").select("*, contacts(name, id)").order("created_at", { ascending: false });
+    if (!isAdmin && userProfile?.department_id) {
+      oppsQuery = oppsQuery.eq("department_id", userProfile.department_id);
+    }
     const [oppsRes, contactsRes, deptsRes] = await Promise.all([
-      supabase.from("opportunities").select("*, contacts(name, id)").order("created_at", { ascending: false }),
+      oppsQuery,
       supabase.from("contacts").select("id, name").order("name"),
       supabase.from("departments").select("*").order("name"),
     ]);
