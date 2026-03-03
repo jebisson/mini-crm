@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
 import { supabase } from "../supabaseClient";
 import { useUserProfile } from "../hooks/useUserProfile";
-import { Users, AlertCircle, TrendingUp, DollarSign, Clock, Activity } from "lucide-react";
+import { Users, AlertCircle, TrendingUp, Clock, Activity } from "lucide-react";
 import { format, addDays, isAfter, isBefore, startOfDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
@@ -104,8 +104,8 @@ export default function DashboardPage() {
     setLoading(false);
   };
 
-  const fmtCurrency = (n) =>
-    n >= 1000 ? `${(n / 1000).toFixed(0)} k$` : `${n}$`;
+  const fmtHours = (n) =>
+    n >= 1000 ? `${(n / 1000).toFixed(1)} k h` : `${n} h`;
 
   if (loading) {
     return (
@@ -131,7 +131,7 @@ export default function DashboardPage() {
         <StatCard icon={Users}       label="Contacts"              value={stats.contacts}                   accent="#e1a209" />
         <StatCard icon={AlertCircle} label="Tâches en retard"      value={stats.overdue}                    accent="#a00021" />
         <StatCard icon={TrendingUp}  label="Opportunités actives"  value={stats.active}                     accent="#3b82f6" />
-        <StatCard icon={DollarSign}  label="Valeur pipeline"       value={fmtCurrency(stats.pipeline ?? 0)} accent="#22c55e" />
+        <StatCard icon={Clock}       label="Banque d'heures"        value={fmtHours(stats.pipeline ?? 0)}    accent="#22c55e" />
       </div>
 
       {/* Middle row */}

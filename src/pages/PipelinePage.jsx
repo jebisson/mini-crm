@@ -4,7 +4,7 @@ import { supabase } from "../supabaseClient";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { logActivity } from "../utils/logActivity";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { Plus, X, Save, DollarSign, ChevronDown, Calendar, User } from "lucide-react";
+import { Plus, X, Save, Clock, ChevronDown, Calendar, User } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -44,7 +44,7 @@ function OppCard({ opp, index, onClick }) {
           <div className="flex items-center justify-between mt-1">
             {opp.value ? (
               <span className="text-xs font-bold text-brand-amber flex items-center gap-0.5">
-                <DollarSign size={10} />{Number(opp.value).toLocaleString("fr-CA")}
+                <Clock size={10} />{Number(opp.value).toLocaleString("fr-CA")} h
               </span>
             ) : <span />}
             {opp.close_date && (
@@ -219,7 +219,7 @@ export default function PipelinePage() {
             </div>
             <input
               type="number"
-              placeholder="Valeur ($)"
+              placeholder="Heures estimées (h)"
               value={form.value}
               onChange={e => setForm(f => ({ ...f, value: e.target.value }))}
               className="input"
@@ -309,7 +309,7 @@ export default function PipelinePage() {
                   {total > 0 && (
                     <div className="text-right px-2 pt-1">
                       <span className="text-xs font-bold text-brand-amber">
-                        {total.toLocaleString("fr-CA")} $
+                        {total.toLocaleString("fr-CA")} h
                       </span>
                     </div>
                   )}
@@ -351,8 +351,8 @@ export default function PipelinePage() {
               )}
               {detailOpp.value && (
                 <div className="flex gap-3">
-                  <dt className="w-28 text-brand-gray50 font-medium flex-shrink-0">Valeur</dt>
-                  <dd className="text-brand-dark font-bold">{Number(detailOpp.value).toLocaleString("fr-CA")} $</dd>
+                  <dt className="w-28 text-brand-gray50 font-medium flex-shrink-0">Heures</dt>
+                  <dd className="text-brand-dark font-bold">{Number(detailOpp.value).toLocaleString("fr-CA")} h</dd>
                 </div>
               )}
               {detailOpp.owner_email && (
