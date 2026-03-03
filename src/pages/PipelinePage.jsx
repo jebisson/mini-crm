@@ -93,7 +93,7 @@ export default function PipelinePage() {
   const handleDragEnd = async ({ source, destination, draggableId }) => {
     if (!destination || source.droppableId === destination.droppableId) return;
     const newStage = destination.droppableId;
-    setOpps(prev => prev.map(o => o.id === Number(draggableId) ? { ...o, stage: newStage } : o));
+    setOpps(prev => prev.map(o => o.id === draggableId ? { ...o, stage: newStage } : o));
     await supabase.from("opportunities").update({ stage: newStage }).eq("id", draggableId);
     await logActivity(supabase, {
       userEmail,
