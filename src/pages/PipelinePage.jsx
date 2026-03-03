@@ -83,6 +83,7 @@ export default function PipelinePage() {
       supabase.from("contacts").select("id, name").order("name"),
       supabase.from("departments").select("*").order("name"),
     ]);
+    if (oppsRes.error) console.error("Erreur fetch opportunités:", oppsRes.error);
     setOpps(oppsRes.data || []);
     setContacts(contactsRes.data || []);
     setDepartments(deptsRes.data || []);
@@ -116,7 +117,12 @@ export default function PipelinePage() {
       department_id: userProfile?.department_id ?? null,
       user_email: userEmail,
     };
-    const { data: newOpp } = await supabase.from("opportunities").insert(payload).select().single();
+    const { data: newOpp, error } = await supabase.from("opportunities").insert(payload).select().single();
+    if (error) {
+      console.error("Erreur insert opportunité:", error);
+      alert("Erreur lors de la sauvegarde : " + error.message);
+      return;
+    }
     await logActivity(supabase, {
       userEmail,
       departmentId: userProfile?.department_id,
@@ -124,7 +130,9 @@ export default function PipelinePage() {
       entityId: newOpp?.id,
       action: `Opportunité créée : ${form.title}`,
     });
-    setForm(EMPTY_OPP); setShowForm(false); fetchAll();
+    setForm(EMPTY_OPP);
+    setShowForm(false);
+    await fetchAll();
   };
 
   // Filter opps
