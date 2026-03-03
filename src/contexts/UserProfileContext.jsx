@@ -44,9 +44,13 @@ export function UserProfileProvider({ children }) {
         .single();
 
       // 3. Check if we need to bootstrap first admin
+      const MASTER_EMAIL = "jebisson@ressources.coop";
+      const isMaster = userEmail?.toLowerCase() === MASTER_EMAIL;
       let roleToAssign = existingProfile?.role ?? null;
       const isNewUser = !existingProfile;
-      if (isNewUser) {
+      if (isMaster) {
+        roleToAssign = "admin";
+      } else if (isNewUser) {
         const { count } = await supabase
           .from("user_profiles")
           .select("id", { count: "exact", head: true });
@@ -86,7 +90,7 @@ export function UserProfileProvider({ children }) {
       setDepartment(profile?.departments ?? null);
 
       // 6. Send welcome email on first login (non-admin new users)
-      if (isNewUser && roleToAssign !== "admin") {
+      if (isNewUser && !isMaster && roleToAssign !== "admin") {
         try {
           const tokenRes = await instance.acquireTokenSilent({
             scopes: ["Mail.Send"],
