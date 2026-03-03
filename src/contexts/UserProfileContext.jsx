@@ -45,7 +45,8 @@ export function UserProfileProvider({ children }) {
 
       // 3. Check if we need to bootstrap first admin
       let roleToAssign = existingProfile?.role ?? null;
-      if (!existingProfile) {
+      const isNewUser = !existingProfile;
+      if (isNewUser) {
         const { count } = await supabase
           .from("user_profiles")
           .select("id", { count: "exact", head: true });
@@ -83,6 +84,44 @@ export function UserProfileProvider({ children }) {
       const profile = upserted ?? existingProfile;
       setUserProfile(profile);
       setDepartment(profile?.departments ?? null);
+
+      // 6. Send welcome email on first login (non-admin new users)
+      if (isNewUser && roleToAssign !== "admin") {
+        try {
+          const tokenRes = await instance.acquireTokenSilent({
+            scopes: ["Mail.Send"],
+            account,
+          });
+          await fetch("https://graph.microsoft.com/v1.0/me/sendMail", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${tokenRes.accessToken}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message: {
+                subject: "Le Consortium Mini CRM — Compte en attente d'activation",
+                body: {
+                  contentType: "HTML",
+                  content: `
+                    <p>Bonjour ${account.name ?? userEmail},</p>
+                    <p>Votre compte <strong>Le Consortium Mini CRM</strong> a bien été créé.</p>
+                    <p>Il est actuellement <strong>en attente d'activation</strong> par un administrateur.
+                    Vous recevrez accès complet à l'application dès qu'un admin aura assigné votre département.</p>
+                    <p>Si vous avez des questions, veuillez contacter votre administrateur.</p>
+                    <br/>
+                    <p>— Le Consortium Mini CRM</p>
+                  `,
+                },
+                toRecipients: [{ emailAddress: { address: userEmail } }],
+              },
+              saveToSentItems: false,
+            }),
+          });
+        } catch {
+          // Email non critique — on ignore l'erreur silencieusement
+        }
+      }
     } catch (err) {
       console.error("UserProfileContext error:", err);
     } finally {
