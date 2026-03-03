@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Poppins", Arial, sans-serif;
+    background-color: #f5f4f0;
+    color: #484848;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Red Hat Display", sans-serif;
+    font-weight: 700;
+    color: #000000;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.4);
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* ─── Inputs ─────────────────────────────────────────── */
+  .input {
+    @apply w-full bg-white border border-brand-gray20 rounded-xl px-4 py-2.5 text-sm text-brand-gray80 font-body
+           placeholder-brand-gray50 focus:outline-none focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20
+           transition-all duration-150;
+  }
+
+  .input-dark {
+    @apply w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white font-body
+           placeholder-zinc-500 focus:outline-none focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/30
+           transition-all duration-150;
+  }
+
+  /* ─── Buttons ────────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-brand-gold hover:bg-brand-amber active:bg-brand-amber/90
+           text-black font-body font-semibold text-sm px-5 py-2.5 rounded-xl
+           transition-all duration-150 shadow-sm hover:shadow-md cursor-pointer;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 text-brand-gray50 hover:text-brand-gray80 hover:bg-brand-gray20/50
+           font-body text-sm px-4 py-2.5 rounded-xl transition-all duration-150 cursor-pointer;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center gap-2 text-brand-red/70 hover:text-brand-red hover:bg-brand-red/5
+           font-body text-sm px-4 py-2.5 rounded-xl transition-all duration-150 cursor-pointer;
+  }
+
+  /* ─── Cards ──────────────────────────────────────────── */
+  .card {
+    @apply bg-white rounded-2xl border border-brand-gray20/70 shadow-sm;
+  }
+
+  .card-hover {
+    @apply bg-white rounded-2xl border border-brand-gray20/70 shadow-sm
+           hover:border-brand-gold/40 hover:shadow-md transition-all duration-200;
+  }
+
+  /* ─── Badges ─────────────────────────────────────────── */
+  .badge-todo {
+    @apply inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full
+           bg-zinc-100 text-zinc-600;
+  }
+
+  .badge-progress {
+    @apply inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full
+           bg-brand-gold/15 text-brand-amber;
+  }
+
+  .badge-done {
+    @apply inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full
+           bg-emerald-50 text-emerald-600;
+  }
+
+  /* ─── Page header ────────────────────────────────────── */
+  .page-header {
+    @apply flex items-center justify-between mb-8;
+  }
+
+  .page-title {
+    @apply font-display text-2xl font-bold text-brand-dark;
+  }
+
+  .page-subtitle {
+    @apply text-sm text-brand-gray50 mt-0.5 font-body;
+  }
+}
