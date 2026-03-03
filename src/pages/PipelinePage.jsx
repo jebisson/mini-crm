@@ -19,7 +19,7 @@ const STAGES = [
 
 const EMPTY_OPP = {
   title: "", contact_id: "", value: "", stage: "prospect",
-  owner_email: "", close_date: "", notes: "",
+  owner_email: "", expected_close: "", notes: "",
 };
 
 function OppCard({ opp, index, onClick }) {
@@ -47,9 +47,9 @@ function OppCard({ opp, index, onClick }) {
                 <Clock size={10} />{Number(opp.value).toLocaleString("fr-CA")} h
               </span>
             ) : <span />}
-            {opp.close_date && (
+            {opp.expected_close && (
               <span className="text-[10px] text-brand-gray50 flex items-center gap-0.5">
-                <Calendar size={9} />{format(new Date(opp.close_date), "d MMM", { locale: fr })}
+                <Calendar size={9} />{format(new Date(opp.expected_close), "d MMM", { locale: fr })}
               </span>
             )}
           </div>
@@ -112,7 +112,7 @@ export default function PipelinePage() {
       value: form.value ? Number(form.value) : null,
       stage: form.stage,
       owner_email: form.owner_email || userEmail,
-      close_date: form.close_date || null,
+      expected_close: form.expected_close || null,
       notes: form.notes || null,
       department_id: userProfile?.department_id ?? null,
       user_email: userEmail,
@@ -250,8 +250,8 @@ export default function PipelinePage() {
             />
             <input
               type="date"
-              value={form.close_date}
-              onChange={e => setForm(f => ({ ...f, close_date: e.target.value }))}
+              value={form.expected_close}
+              onChange={e => setForm(f => ({ ...f, expected_close: e.target.value }))}
               className="input"
             />
             <textarea
@@ -369,10 +369,10 @@ export default function PipelinePage() {
                   <dd className="text-brand-dark">{detailOpp.owner_email}</dd>
                 </div>
               )}
-              {detailOpp.close_date && (
+              {detailOpp.expected_close && (
                 <div className="flex gap-3">
                   <dt className="w-28 text-brand-gray50 font-medium flex-shrink-0">Date de clôture</dt>
-                  <dd className="text-brand-dark">{format(new Date(detailOpp.close_date), "d MMMM yyyy", { locale: fr })}</dd>
+                  <dd className="text-brand-dark">{format(new Date(detailOpp.expected_close), "d MMMM yyyy", { locale: fr })}</dd>
                 </div>
               )}
               {detailOpp.notes && (
