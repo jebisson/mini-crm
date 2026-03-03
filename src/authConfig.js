@@ -11,5 +11,5 @@ export const msalConfig = {
 };
 
 export const loginRequest = {
-  scopes: ["User.Read", "Mail.Send"],
+  scopes: ["User.Read"],
 };

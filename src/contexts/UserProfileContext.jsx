@@ -92,10 +92,12 @@ export function UserProfileProvider({ children }) {
       // 6. Send welcome email on first login (non-admin new users)
       if (isNewUser && !isMaster && roleToAssign !== "admin") {
         try {
-          const tokenRes = await instance.acquireTokenSilent({
-            scopes: ["Mail.Send"],
-            account,
-          });
+          let tokenRes;
+          try {
+            tokenRes = await instance.acquireTokenSilent({ scopes: ["Mail.Send"], account });
+          } catch {
+            tokenRes = await instance.acquireTokenPopup({ scopes: ["Mail.Send"], account });
+          }
           await fetch("https://graph.microsoft.com/v1.0/me/sendMail", {
             method: "POST",
             headers: {
