@@ -115,7 +115,6 @@ export default function PipelinePage() {
       expected_close: form.expected_close || null,
       notes: form.notes || null,
       department_id: userProfile?.department_id ?? null,
-      user_email: userEmail,
     };
     const { data: newOpp, error } = await supabase.from("opportunities").insert(payload).select().single();
     if (error) {
